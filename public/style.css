@@ -1,0 +1,15 @@
+.custom-primary-bg-color{
+    background-color: #00474B;
+}
+.custom-secondary-bg-color{
+    background-color: #FC427B;
+}
+.tip-btn:hover{
+    background-color: #00474B;
+}
+.custom-color{
+    color: #FC427B;
+}
+.tip-btn, #custom-tip-btn{
+    cursor: pointer;
+}
