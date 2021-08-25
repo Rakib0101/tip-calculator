@@ -44,3 +44,27 @@ function calculateTip(bill = 0, people = 0, tip = 0, percentage = false) {
 
     return [billPerPerson, tipPerPerson];
 }
+
+// validation rules
+
+var decimalInputs = document.getElementsByClassName('decimal-only');
+for (let i = 0; i < decimalInputs.length; i++) {
+    decimalInputs[i].addEventListener('keyup', function (event) {
+        let input = event.target.value;
+        let expr = /^\d{0,8}(\.\d{0,2})?$/;
+        if (!expr.test(input)) {
+            decimalInputs[i].value = input.slice(0, -1);
+        }
+    });
+}
+
+var integerInputs = document.getElementsByClassName('integer-only');
+for (let i = 0; i < integerInputs.length; i++) {
+    integerInputs[i].addEventListener('keyup', function (event) {
+        let input = event.target.value;
+        let expr = /^\d{0,3}?$/;
+        if (!expr.test(input)) {
+            integerInputs[i].value = input.slice(0, -1);
+        }
+    });
+}
