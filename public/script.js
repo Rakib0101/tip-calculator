@@ -4,14 +4,20 @@ document.getElementById('tip-button').addEventListener('click', function (event)
         document.getElementById('custom-tip-div').style.display = "block";
     }
     else {
-        let bill = parseFloat(document.getElementById('bill').value);
-        let people = parseInt(document.getElementById('people').value);
+        const [status, errors] = validateInputs(['bill', 'people']);
 
-        let [billPerPerson, tipPerPerson]
-            = calculateTip(bill, people, parseFloat($input), true);
+        if (status) {
+            alert("Required input fields are missing");
+        } else {
+            let bill = parseFloat(document.getElementById('bill').value);
+            let people = parseInt(document.getElementById('people').value);
 
-        document.getElementById('total-tip').innerText = billPerPerson.toFixed(2);
-        document.getElementById('per-person').innerText = tipPerPerson.toFixed(2);
+            let [billPerPerson, tipPerPerson]
+                = calculateTip(bill, people, parseFloat($input), true);
+
+            document.getElementById('total-tip').innerText = billPerPerson.toFixed(2);
+            document.getElementById('per-person').innerText = tipPerPerson.toFixed(2);
+        }
     }
 });
 
@@ -20,14 +26,19 @@ const customButtonTip = document.getElementById('custom-tip-btn');
 const resetButton = document.getElementById('reset')
 
 customButtonTip.addEventListener('click', function () {
-    let bill = parseFloat(document.getElementById('bill').value);
-    let people = parseInt(document.getElementById('people').value);
-    let tipAmount = parseFloat(document.getElementById('custom-tip').value);
+    const [status, errors] = validateInputs(['bill', 'people', 'custom-tip']);
+    if (status) {
+        alert("Required input fields are missing");
+    } else {
+        let bill = parseFloat(document.getElementById('bill').value);
+        let people = parseInt(document.getElementById('people').value);
+        let tipAmount = parseFloat(document.getElementById('custom-tip').value);
 
-    let [billPerPerson, tipPerPerson] = calculateTip(bill, people, tipAmount);
+        let [billPerPerson, tipPerPerson] = calculateTip(bill, people, tipAmount);
 
-    document.getElementById('total-tip').innerText = billPerPerson.toFixed(2);
-    document.getElementById('per-person').innerText = tipPerPerson.toFixed(2);
+        document.getElementById('total-tip').innerText = billPerPerson.toFixed(2);
+        document.getElementById('per-person').innerText = tipPerPerson.toFixed(2);
+    }
 })
 
 resetButton.addEventListener('click', function () {
@@ -67,4 +78,22 @@ for (let i = 0; i < integerInputs.length; i++) {
             integerInputs[i].value = input.slice(0, -1);
         }
     });
+}
+
+function validateInputs(inputs = []) {
+    let errorMessages = {};
+    for (let i = 0; i < inputs.length; i++) {
+        let attribute = inputs[i];
+        let input = document.getElementById(attribute).value;
+
+        if (!hasInput(input)) {
+            errorMessages[attribute] = "Input " + attribute + " is required";
+        }
+    }
+
+    return [(Object.entries(errorMessages).length > 0), errorMessages];
+}
+
+function hasInput(input) {
+    return !((isNaN(input) || input == null || input == '' || input == 'undefined'));
 }
